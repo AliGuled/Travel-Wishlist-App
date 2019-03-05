@@ -14,6 +14,7 @@
 		189407222225E87000E71018 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 189407202225E87000E71018 /* LaunchScreen.storyboard */; };
 		1894072A2225F45A00E71018 /* PlaceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189407292225F45A00E71018 /* PlaceList.swift */; };
 		1894072C2225F4A800E71018 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1894072B2225F4A800E71018 /* Places.swift */; };
+		18B72357222D5121005DAB25 /* VisitationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B72356222D5121005DAB25 /* VisitationTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		189407232225E87000E71018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		189407292225F45A00E71018 /* PlaceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceList.swift; sourceTree = "<group>"; };
 		1894072B2225F4A800E71018 /* Places.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Places.swift; sourceTree = "<group>"; };
+		18B72356222D5121005DAB25 /* VisitationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitationTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				189407292225F45A00E71018 /* PlaceList.swift */,
 				1894072B2225F4A800E71018 /* Places.swift */,
 				189407192225E86F00E71018 /* MapViewController.swift */,
+				18B72356222D5121005DAB25 /* VisitationTableViewController.swift */,
 				1894071B2225E86F00E71018 /* Main.storyboard */,
 				1894071E2225E87000E71018 /* Assets.xcassets */,
 				189407202225E87000E71018 /* LaunchScreen.storyboard */,
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1894072A2225F45A00E71018 /* PlaceList.swift in Sources */,
+				18B72357222D5121005DAB25 /* VisitationTableViewController.swift in Sources */,
 				1894071A2225E86F00E71018 /* MapViewController.swift in Sources */,
 				189407182225E86F00E71018 /* AppDelegate.swift in Sources */,
 				1894072C2225F4A800E71018 /* Places.swift in Sources */,

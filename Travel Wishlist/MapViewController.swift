@@ -10,12 +10,15 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
-    
-    var placeList: PlaceList!
-    var places: Places!
+   
+
+    var placeList =  [PlaceList]()
+    var allPlaces = [Places]()
     //Creating mapview object
     var mapView: MKMapView!
     var geoCoder =  CLGeocoder()
+    
+
     
     //the object that determines the location
     let placeManger = CLLocationManager()
@@ -26,7 +29,6 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         mapView = MKMapView()
         view = mapView
     
-        
     }
     
     override func viewDidLoad() {
@@ -42,32 +44,107 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         let tabGesture = UITapGestureRecognizer(target: self, action: #selector(createTabReconizer(recongnizer:)))
         mapView.addGestureRecognizer(tabGesture)
+        
+        
+        let rightBarButton = UIBarButtonItem(title: "Add Place", style: .plain, target: self, action: #selector(rightbarButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        rightBarButton.tintColor = .white
+        
+        let leftBarButton = UIBarButtonItem(title: "Look up", style: .plain, target: self, action: #selector(leftButton))
+        leftBarButton.tintColor = .white
+        
+        navigationItem.leftBarButtonItem = leftBarButton
+        
+        navigationController?.navigationBar.barTintColor = .blue
+        
+        
+   
+        
     }
+    
+    @objc func leftButton(leftButton: UIBarButtonItem) {
+        
+        print("Left BarButton")
+        
+        performSegue(withIdentifier: "hello", sender: leftButton)
+    }
+    
+    
+    @objc func rightbarButton() {
+       
+        print("Right barButton")
+    }
+    
+
     
     //Create add butoon
   @objc  func createTabReconizer(recongnizer: UITapGestureRecognizer) {
-    if let location = placeManger.location {
+    
     let locationPoint = recongnizer.location(in: mapView)
     let cooridinate = mapView.convert(locationPoint, toCoordinateFrom: mapView)
     
     let annotation = MKPointAnnotation()
     annotation.coordinate = cooridinate
-    mapView.addAnnotation(annotation)
     
-    geoCoder.reverseGeocodeLocation(location) { (placeMarks: [CLPlacemark]?, error: Error?) in
+    mapView.addAnnotation(annotation)
+   
+    if let location = placeManger.location  {
+    
         
-        
-        if error == nil {
-            
-            
-            
-            print("Error free")
-            
-            
+       
+     
+            geoCoder.reverseGeocodeLocation(location) {(placeMarks : [CLPlacemark]?, error: Error?) in
+                if let placeLocation = placeMarks?.first {
+                    
+               
+                        
+                        if error == nil {
+                            
+                            let locationString = "\(placeLocation.administrativeArea!)"
+                            annotation.title = locationString
+                    }
+                }
             }
         }
+        
+
+        
+
+       
+    
     }
 }
+
+        
+     
+        
+        
+        
+//
+//        if let location = placeManger.location {
+//
+//            geoCoder.reverseGeocodeLocation(location) { (placeMarks : [CLPlacemark]?, error : Error?) in
+//            if error == nil {
+//
+//                if let placeMark = placeMarks?[0] {
+//                    let subthoroughfare = placeMark.subThoroughfare != nil ? placeMark.subThoroughfare : ""
+//                    let thoroughfare = placeMark.thoroughfare != nil ? placeMark.thoroughfare : ""
+//                    let country = placeMark.country != nil ? placeMark.locality : ""
+//                    let earthRegion = placeMark.country != nil ? placeMark.country : ""
+//
+//                    let locationString = "\(subthoroughfare!) \(thoroughfare!) \(country!) \(earthRegion!)"
+//                    print(locationString)
+//
+//                    let annotation = MKPointAnnotation()
+//                    annotation.title = locationString
+//                    self.mapView.addAnnotation(annotation)
+//                    }
+//                }
+//            }
+//
+//        }
+        
+
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKPointAnnotation {
@@ -84,5 +161,5 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
 
 
 
-}
+
 

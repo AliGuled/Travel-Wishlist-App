@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let nav = window?.rootViewController as! UINavigationController
         let placeMapViewController = nav.topViewController as! MapViewController
-        placeMapViewController.placeList = placeList
+        placeMapViewController.placeList = [placeList]
         
 
         

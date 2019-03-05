@@ -7,13 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
 
-class PlaceList{
+class PlaceList {
+    
     var allPlaces = [Places]()
+    var location = CLLocationCoordinate2D()
+    let currentDate = Date()
+
     
     func createPlace() -> Places {
-        
-        let newPlace = Places(name: "New York???", isVisited: true, info: "Beautiful ??")
+        let currentDate = Date()
+        let newPlace = Places(location, date: currentDate, descriptionString: "??")
         allPlaces.append(newPlace)
         return newPlace
     }
@@ -35,3 +40,5 @@ class PlaceList{
     }
     
 }
+    
+
