@@ -8,6 +8,9 @@
 
 import UIKit
 import MapKit
+import CoreLocation
+
+
 
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
    
@@ -28,6 +31,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         super.loadView()
         mapView = MKMapView()
         view = mapView
+        placeManger.startUpdatingLocation()
     
     }
     
@@ -39,7 +43,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         placeManger.delegate = self
         placeManger.requestWhenInUseAuthorization()
         mapView.delegate = self
-        mapView.showsUserLocation = true
+       // mapView.showsUserLocation = true
         
         
         let tabGesture = UITapGestureRecognizer(target: self, action: #selector(createTabReconizer(recongnizer:)))
@@ -56,10 +60,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         navigationItem.leftBarButtonItem = leftBarButton
         
         navigationController?.navigationBar.barTintColor = .blue
-        
-        
-   
-        
+
     }
     
     @objc func leftButton(leftButton: UIBarButtonItem) {
@@ -68,98 +69,50 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         performSegue(withIdentifier: "hello", sender: leftButton)
     }
-    
-    
+  
     @objc func rightbarButton() {
        
         print("Right barButton")
     }
-    
 
-    
     //Create add butoon
-  @objc  func createTabReconizer(recongnizer: UITapGestureRecognizer) {
+    @objc  func createTabReconizer(recongnizer: UITapGestureRecognizer) {
+    
     
     let locationPoint = recongnizer.location(in: mapView)
     let cooridinate = mapView.convert(locationPoint, toCoordinateFrom: mapView)
+        print(cooridinate)
     
     let annotation = MKPointAnnotation()
     annotation.coordinate = cooridinate
     
     mapView.addAnnotation(annotation)
    
-    if let location = placeManger.location  {
-    
-        
-       
-     
-            geoCoder.reverseGeocodeLocation(location) {(placeMarks : [CLPlacemark]?, error: Error?) in
-                if let placeLocation = placeMarks?.first {
+
+        geoCoder.reverseGeocodeLocation(CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)) {(placeMarks : [CLPlacemark]?, error: Error?) in
+                if let placeLocation = placeMarks?[0] {
                     
-               
-                        
-                        if error == nil {
-                            
-                            let locationString = "\(placeLocation.administrativeArea!)"
+
+                    if error == nil && (placeMarks?.count)! > 0 {
+                    
+                            let locationString = "Want to go here? \(placeLocation.name!)"
+                            annotation.coordinate = cooridinate
                             annotation.title = locationString
                     }
                 }
             }
+        
         }
         
-
-        
-
-       
-    
+ 
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        placeManger.startUpdatingLocation()
     }
 }
 
-        
-     
-        
-        
-        
-//
-//        if let location = placeManger.location {
-//
-//            geoCoder.reverseGeocodeLocation(location) { (placeMarks : [CLPlacemark]?, error : Error?) in
-//            if error == nil {
-//
-//                if let placeMark = placeMarks?[0] {
-//                    let subthoroughfare = placeMark.subThoroughfare != nil ? placeMark.subThoroughfare : ""
-//                    let thoroughfare = placeMark.thoroughfare != nil ? placeMark.thoroughfare : ""
-//                    let country = placeMark.country != nil ? placeMark.locality : ""
-//                    let earthRegion = placeMark.country != nil ? placeMark.country : ""
-//
-//                    let locationString = "\(subthoroughfare!) \(thoroughfare!) \(country!) \(earthRegion!)"
-//                    print(locationString)
-//
-//                    let annotation = MKPointAnnotation()
-//                    annotation.title = locationString
-//                    self.mapView.addAnnotation(annotation)
-//                    }
-//                }
-//            }
-//
-//        }
-        
+
+
+
 
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKPointAnnotation {
-            let pinAnnoation = MKPinAnnotationView()
-            pinAnnoation.tintColor = UIColor.purple
-            pinAnnoation.annotation = annotation
-            pinAnnoation.canShowCallout = true
-            return pinAnnoation
-        }
-        return nil
-
-    }
-
-
-
-
-
 
