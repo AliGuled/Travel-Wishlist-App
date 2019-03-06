@@ -12,13 +12,9 @@ import CoreLocation
 class PlaceList {
     
     var allPlaces = [Places]()
-    var location = CLLocationCoordinate2D()
-    let currentDate = Date()
-
     
     func createPlace() -> Places {
-        let currentDate = Date()
-        let newPlace = Places(location, date: currentDate, descriptionString: "??")
+        let newPlace = Places(name: "place of the name", place: [CLLocation(latitude: -45, longitude: 98)], isVisited: true)
         allPlaces.append(newPlace)
         return newPlace
     }
@@ -38,7 +34,7 @@ class PlaceList {
         allPlaces.remove(at: fromIndex)
         allPlaces.insert(movePlace, at: toIndex)
     }
-    
+ 
 }
     
 

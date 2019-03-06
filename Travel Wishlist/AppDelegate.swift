@@ -18,13 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let placeList = PlaceList()
         
-        
         let nav = window?.rootViewController as! UINavigationController
         let placeMapViewController = nav.topViewController as! MapViewController
-        placeMapViewController.placeList = [placeList]
-        
-
-        
+        placeMapViewController.placeList = placeList
+     
         return true
     }
 

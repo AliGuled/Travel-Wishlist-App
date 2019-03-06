@@ -13,16 +13,13 @@ import CoreLocation
 
 
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
-   
 
-    var placeList =  [PlaceList]()
+    var placeList: PlaceList!
     var allPlaces = [Places]()
     //Creating mapview object
     var mapView: MKMapView!
     var geoCoder =  CLGeocoder()
-    
 
-    
     //the object that determines the location
     let placeManger = CLLocationManager()
     
@@ -58,9 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         leftBarButton.tintColor = .white
         
         navigationItem.leftBarButtonItem = leftBarButton
-        
         navigationController?.navigationBar.barTintColor = .blue
-
     }
     
     @objc func leftButton(leftButton: UIBarButtonItem) {
@@ -81,23 +76,33 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
     
     let locationPoint = recongnizer.location(in: mapView)
     let cooridinate = mapView.convert(locationPoint, toCoordinateFrom: mapView)
-        print(cooridinate)
+       // print(cooridinate)
     
     let annotation = MKPointAnnotation()
     annotation.coordinate = cooridinate
     
     mapView.addAnnotation(annotation)
+        
+        let span:MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
+        let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude), span: span)
+        mapView.setRegion(region, animated: true)
    
 
         geoCoder.reverseGeocodeLocation(CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)) {(placeMarks : [CLPlacemark]?, error: Error?) in
                 if let placeLocation = placeMarks?[0] {
                     
-
                     if error == nil && (placeMarks?.count)! > 0 {
                     
                             let locationString = "Want to go here? \(placeLocation.name!)"
                             annotation.coordinate = cooridinate
                             annotation.title = locationString
+                        
+                        let newPlace = self.placeList.createPlace()
+                        
+                        
+                        self.allPlaces.append(newPlace)
+                        print(newPlace)
+                        
                     }
                 }
             }
@@ -105,9 +110,6 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         }
         
  
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        placeManger.startUpdatingLocation()
-    }
 }
 
 
