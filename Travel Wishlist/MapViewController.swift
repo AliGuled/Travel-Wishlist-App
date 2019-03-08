@@ -15,7 +15,8 @@ import CoreLocation
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
 
     var placeList: PlaceList!
-    var allPlaces = [Places]()
+    var allLocations = [Places]()
+    var locations: Places!
     //Creating mapview object
     var mapView: MKMapView!
     var geoCoder =  CLGeocoder()
@@ -97,14 +98,22 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                             annotation.coordinate = cooridinate
                             annotation.title = locationString
                         
-                        let newPlace = self.placeList.createPlace()
+                        let newPlace = Places(name: locationString, place: [CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)], isVisited: true)
                         
                         
-                        self.allPlaces.append(newPlace)
-                        print(newPlace)
+                        
+                        self.allLocations.append(newPlace)
+                        print(newPlace.name)
+                        print(newPlace.places)
+                        print(newPlace.isVisited)
+                        
+                        
+                        
                         
                     }
+                    
                 }
+            
             }
         
         }

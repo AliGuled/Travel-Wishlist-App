@@ -11,17 +11,18 @@ import CoreLocation
 
 class PlaceList {
     
-    var allPlaces = [Places]()
+    static var locations =  [Places]()
+
     
     func createPlace() -> Places {
         let newPlace = Places(name: "place of the name", place: [CLLocation(latitude: -45, longitude: 98)], isVisited: true)
-        allPlaces.append(newPlace)
+        PlaceList.locations.append(newPlace)
         return newPlace
     }
     
     func removePlace(_ place: Places) {
-        if let index = allPlaces.index(of: place){
-            allPlaces.remove(at: index)
+        if let index = PlaceList.locations.index(of: place){
+            PlaceList.locations.remove(at: index)
         }
     }
     
@@ -29,10 +30,10 @@ class PlaceList {
         if fromIndex == toIndex {
             return
         }
-        let movePlace = allPlaces[fromIndex]
+        let movePlace = PlaceList.locations[fromIndex]
         
-        allPlaces.remove(at: fromIndex)
-        allPlaces.insert(movePlace, at: toIndex)
+        PlaceList.locations.remove(at: fromIndex)
+        PlaceList.locations.insert(movePlace, at: toIndex)
     }
  
 }
