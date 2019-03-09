@@ -11,7 +11,8 @@ import UIKit
 
 class VisitationTableViewController: UITableViewController {
     
-    
+    var myString = ""
+    var locations: Places!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,9 +24,12 @@ class VisitationTableViewController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Visited"
         navigationController?.navigationBar.barTintColor = .blue
+        print(myString.description)
+        print("view didload")
         
 
     }
+    
 
     @objc func dismisController() {
         

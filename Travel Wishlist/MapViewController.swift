@@ -20,6 +20,11 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
     //Creating mapview object
     var mapView: MKMapView!
     var geoCoder =  CLGeocoder()
+    
+    var latitudeDelta = 0.3
+    var longitudeDelta = 0.3
+    
+    var visition: VisitationTableViewController!
 
     //the object that determines the location
     let placeManger = CLLocationManager()
@@ -63,48 +68,55 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         print("Left BarButton")
         
-        performSegue(withIdentifier: "hello", sender: leftButton)
+        performSegue(withIdentifier: "place", sender: leftButton)
+        
+        
+        
     }
+    
+  
   
     @objc func rightbarButton() {
        
         print("Right barButton")
     }
+    
+    var coori : CLLocationCoordinate2D  {
+        let recongnizer = UITapGestureRecognizer()
+        let locationPoint = recongnizer.location(in: mapView)
+        let cooridinate = mapView.convert(locationPoint, toCoordinateFrom: mapView)
 
+        return cooridinate
+        
+    }
+    
     //Create add butoon
     @objc  func createTabReconizer(recongnizer: UITapGestureRecognizer) {
     
-    
-    let locationPoint = recongnizer.location(in: mapView)
-    let cooridinate = mapView.convert(locationPoint, toCoordinateFrom: mapView)
-       // print(cooridinate)
-    
-    let annotation = MKPointAnnotation()
-    annotation.coordinate = cooridinate
-    
-    mapView.addAnnotation(annotation)
         
-        let span:MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
-        let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude), span: span)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coori
+        
+        mapView.addAnnotation(annotation)
+        
+        let span:MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+        let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coori.latitude, longitude: coori.longitude), span: span)
         mapView.setRegion(region, animated: true)
-   
-
-        geoCoder.reverseGeocodeLocation(CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)) {(placeMarks : [CLPlacemark]?, error: Error?) in
-                if let placeLocation = placeMarks?[0] {
+        
+        
+        geoCoder.reverseGeocodeLocation(CLLocation(latitude: coori.latitude, longitude: coori.longitude)) {(placeMarks : [CLPlacemark]?, error: Error?) in
+            if let placeLocation = placeMarks?[0] {
+                
+                if error == nil && (placeMarks?.count)! > 0 {
                     
-                    if error == nil && (placeMarks?.count)! > 0 {
-                    
-                            let locationString = "Want to go here? \(placeLocation.name!)"
-                            annotation.coordinate = cooridinate
-                            annotation.title = locationString
-                        
-                        let newPlace = Places(name: locationString, place: [CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)], isVisited: true)
-                        
-                        
+                    let locationString = "Want to go here? \(placeLocation.name!)"
+                    annotation.coordinate = self.coori
+                    annotation.title = locationString
+                    let newPlace = Places(name: locationString, place: CLLocationCoordinate2D(latitude: self.coori.latitude, longitude: self.coori.longitude), isVisited: true)
                         
                         self.allLocations.append(newPlace)
                         print(newPlace.name)
-                        print(newPlace.places)
+                        print(newPlace.cooridinate)
                         print(newPlace.isVisited)
                         
                         
@@ -117,7 +129,20 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
             }
         
         }
-        
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print("Annation view tapped")
+        view.backgroundColor = .purple
+        view.tintColor = .white
+       
+        view.transform = CGAffineTransform.identity
+        view.canShowCallout = true
+        view.isDraggable = true
+        view.dragState = .dragging
+        view.displayPriority = .defaultHigh
+        view.setNeedsDisplay()
+    }
+    
  
 }
 

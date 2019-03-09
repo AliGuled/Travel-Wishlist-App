@@ -24,7 +24,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Item" id="GyJ-mL-gfP"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="nPH-je-id0" kind="presentation" identifier="hello" id="8Zl-Z1-cbl"/>
+                        <segue destination="nPH-je-id0" kind="presentation" identifier="place" id="8Zl-Z1-cbl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

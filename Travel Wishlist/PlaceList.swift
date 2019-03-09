@@ -15,7 +15,7 @@ class PlaceList {
 
     
     func createPlace() -> Places {
-        let newPlace = Places(name: "place of the name", place: [CLLocation(latitude: -45, longitude: 98)], isVisited: true)
+        let newPlace = Places(name: "place of the name", place: CLLocationCoordinate2D(latitude: -45, longitude: 98), isVisited: true)
         PlaceList.locations.append(newPlace)
         return newPlace
     }

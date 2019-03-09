@@ -10,13 +10,20 @@ import UIKit
 import  CoreLocation
 class Places: NSObject {
     
+    
+    var latitude: Double
+    var longitude: Double
     var name: String
     var isVisited: Bool
-    var places = [CLLocation]()
     
-    init(name: String, place: [CLLocation], isVisited:Bool) {
+    var cooridinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
+    init(name: String, place: CLLocationCoordinate2D, isVisited:Bool) {
         self.name = name
         self.isVisited = isVisited
-        self.places = place
+        self.latitude = place.latitude
+        self.longitude = place.longitude
     }
 }
