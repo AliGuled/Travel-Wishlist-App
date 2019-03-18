@@ -6,24 +6,21 @@
 //  Copyright © 2019 Guled Ali. All rights reserved.
 //
 
-import UIKit
 import  CoreLocation
+import Foundation
+
 class Places: NSObject {
     
     
-    var latitude: Double
-    var longitude: Double
+
     var name: String
-    var isVisited: Bool
+    var coordinate: CLLocationCoordinate2D
     
-    var cooridinate: CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    }
-    
-    init(name: String, place: CLLocationCoordinate2D, isVisited:Bool) {
+    init(name: String, coordinate: CLLocationCoordinate2D) {
         self.name = name
-        self.isVisited = isVisited
-        self.latitude = place.latitude
-        self.longitude = place.longitude
+        self.coordinate = coordinate
     }
+    
+
+  
 }

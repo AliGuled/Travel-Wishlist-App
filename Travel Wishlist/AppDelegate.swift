@@ -16,11 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let placeList = PlaceList()
-        
-        let nav = window?.rootViewController as! UINavigationController
-        let placeMapViewController = nav.topViewController as! MapViewController
-        placeMapViewController.placeList = placeList
      
         return true
     }
