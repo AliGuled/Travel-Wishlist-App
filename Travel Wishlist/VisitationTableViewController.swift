@@ -14,10 +14,10 @@ class VisitationTableViewController: UITableViewController {
    var poi: [Places] = []
     
     
+    
     override func viewWillAppear(_ animated: Bool) {
         
- 
-        super.viewWillAppear(true)
+         super.viewWillAppear(true)
         
         let dissButton = UIBarButtonItem(title: "Done", style: .done
             , target: self, action: #selector(dismisController))
@@ -28,8 +28,8 @@ class VisitationTableViewController: UITableViewController {
         navigationItem.title = "Visited"
         navigationController?.navigationBar.barTintColor = .blue
         print("view didload")
-        
-
+        print(poi)
+       
     }
     
     @objc func dismisController() {
@@ -38,26 +38,22 @@ class VisitationTableViewController: UITableViewController {
 
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-    
-       return poi.count
+        return poi.count
     }
     
- 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
      
-
         let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell", for: indexPath)
-   
+        
         let point = poi[indexPath.row]
         cell.textLabel?.text = point.name
         cell.detailTextLabel?.text = "(\(point.coordinate.latitude), \(point.coordinate.longitude))"
-      return cell
+        
+        return cell
     }
+    
+   
     
 }

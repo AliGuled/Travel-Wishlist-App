@@ -10,14 +10,17 @@ import UIKit
 import MapKit
 import CoreLocation
 
-
-
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
 
     var placeModel: PlaceList?
     var pointOfInterest: [Places] = []
-
     
+    var poi: [Places] = [] {
+        didSet {
+            pointOfInterest = poi
+            
+        }
+    }
 
     //Creating mapview object
     var mapView: MKMapView!
@@ -39,7 +42,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         mapView = MKMapView()
         view = mapView
         placeManger.startUpdatingLocation()
-        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -59,8 +62,18 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         mapView.addGestureRecognizer(tapGestrueRecongnizer)
         
         centerMapInInitialCoordinates()
+        showPointsOfInterestInMap()
        
 
+    }
+    
+    func showPointsOfInterestInMap() {
+        mapView.removeAnnotations(mapView.annotations)
+        
+        for point in poi {
+            let pin = PlaceList(point: point)
+            mapView.addAnnotation(pin as! MKAnnotation)
+        }
     }
     
     func centerMapInInitialCoordinates() {
@@ -106,28 +119,17 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         print("Left BarButton")
         
         performSegue(withIdentifier: "place", sender: leftButton)
+      
 
 
     }
     
     @objc func rightbarButton(right: UIBarButtonItem) {
        
-        addPlace()
-        
-     
+        print("Hello")
+
     }
-    
-    func addPlace(){
-       // mapView.removeAnnotations(mapView.annotations)
-        
-        for point in pointOfInterest {
-            let pin = PlaceList(point: point)
-            mapView.addAnnotation(pin as! MKAnnotation)
-        }
-        
-        
-    }
-    
+
 
     @objc func loadPointOfInterests(recongnizer:UITapGestureRecognizer) {
         
@@ -144,12 +146,18 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                 
                 if error == nil && (placeMarks?.count)! > 0 {
                     
-                    let locationString = " 📌\(placeLocation.name!)"
+                    let locationString = " \(placeLocation.name!)"
                     annotation.coordinate = cooridinate
                     annotation.title = locationString
                     print(locationString)
+                    
+                    let place = Places(name: locationString, coordinate: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude))
+                    
+                    self.pointOfInterest.append(place)
+  
         
                 }
+             
                 
                 
             }
@@ -177,13 +185,10 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
             let nav = segue.destination as! UINavigationController
             let detailViewControll = nav.topViewController as! VisitationTableViewController
             
-            for point in pointOfInterest {
-                let pin = PlaceList(point: point)
-                mapView.addAnnotation(pin as! MKAnnotation)
-                detailViewControll.poi = pointOfInterest
-
-            }
             
+                detailViewControll.poi = pointOfInterest
+                
+    
             
         }
 

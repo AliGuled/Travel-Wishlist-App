@@ -20,7 +20,5 @@ class Places: NSObject {
         self.name = name
         self.coordinate = coordinate
     }
-    
 
-  
 }

@@ -25,9 +25,7 @@ class PlaceList : NSObject  {
     var subtitle: String? {
         return "(\(locations.coordinate.latitude), \(locations.coordinate.longitude))"
     }
-    
 
- 
 }
     
 
