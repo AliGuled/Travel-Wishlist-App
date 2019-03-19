@@ -12,9 +12,9 @@ import Foundation
 class Places: NSObject {
     
     
-
+    //location name
     var name: String
-    var coordinate: CLLocationCoordinate2D
+    var coordinate: CLLocationCoordinate2D //coordinate string
     
     init(name: String, coordinate: CLLocationCoordinate2D) {
         self.name = name

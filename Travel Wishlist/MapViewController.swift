@@ -12,9 +12,11 @@ import CoreLocation
 
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
 
-    var placeModel: PlaceList?
-    var pointOfInterest: [Places] = []
+    var newPlace: Places! // Subclass of places
     
+    var pointOfInterest: [Places] = [] // An array of place model
+    
+    //Setting the place location when is added to the list
     var poi: [Places] = [] {
         didSet {
             pointOfInterest = poi
@@ -30,6 +32,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
     var latitude = 43.136581
     var longitude = -87.941101
     
+    //Inital span
     var latitudeDelta = 0.3
     var longitudeDelta = 0.3
 
@@ -44,8 +47,8 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         placeManger.startUpdatingLocation()
     }
     
+    //Outlet are set when view is about to appear
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(true)
         
        navigationItem.title = "Travel Wishlist"
@@ -60,22 +63,11 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         navigationItem.leftBarButtonItem = leftBar
         
         mapView.addGestureRecognizer(tapGestrueRecongnizer)
-        
         centerMapInInitialCoordinates()
-        showPointsOfInterestInMap()
-       
 
     }
-    
-    func showPointsOfInterestInMap() {
-        mapView.removeAnnotations(mapView.annotations)
-        
-        for point in poi {
-            let pin = PlaceList(point: point)
-            mapView.addAnnotation(pin as! MKAnnotation)
-        }
-    }
-    
+
+    //Centering the initail coordinates
     func centerMapInInitialCoordinates() {
         let span:MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
         let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
@@ -83,6 +75,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
     }
     
+    // When the map is tapped it calls the loadpoint of interst function
     var tapGestrueRecongnizer: UITapGestureRecognizer {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(loadPointOfInterests(recongnizer:)))
@@ -90,6 +83,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
 
     }
     
+    //Right bar button for adding place to the list
     var rightBar: UIBarButtonItem  {
        
         let rightBarButton =
@@ -102,35 +96,36 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
     }
     
+    //Left bar button for accesing the place list
     var leftBar: UIBarButtonItem  {
         
         let leftBarButton =
             UIBarButtonItem(title:
-                "Look up", style: .plain,
+                "Places", style: .plain,
                            target: self, action: #selector(leftButton))
         leftBarButton.tintColor = .white
         
         return leftBarButton
         
     }
-
+    //Left bar button for accesing the place list
     @objc func leftButton(leftButton: UIBarButtonItem) {
         
         print("Left BarButton")
         
         performSegue(withIdentifier: "place", sender: leftButton)
-      
-
 
     }
     
+    //Adding locations to the place list
     @objc func rightbarButton(right: UIBarButtonItem) {
        
-        print("Hello")
+       self.navigationItem.rightBarButtonItem?.title = "Find a place to add"
+        self.pointOfInterest.append(newPlace)
 
     }
 
-
+    //Find a place on the map
     @objc func loadPointOfInterests(recongnizer:UITapGestureRecognizer) {
         
         let locationPoint = recongnizer.location(in: mapView)
@@ -138,8 +133,11 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = cooridinate
-
         mapView.addAnnotation(annotation)
+         
+        let span:MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+        let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude), span: span)
+        mapView.setRegion(region, animated: true)
         
         geoCoder.reverseGeocodeLocation(CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)) {(placeMarks : [CLPlacemark]?, error: Error?) in
             if let placeLocation = placeMarks?[0] {
@@ -153,32 +151,20 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                     
                     let place = Places(name: locationString, coordinate: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude))
                     
-                    self.pointOfInterest.append(place)
-  
-        
+                    self.newPlace = place
+                    
+
                 }
-             
-                
-                
+
             }
             
         }
         
+        self.navigationItem.rightBarButtonItem?.title = "Add place"
+        
     }
 
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
-            self.navigationItem.rightBarButtonItem?.title = "Find a place to add"
-    
-    }
-    
-    private func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        
-      //To Do
-        
-       
-        }
-    
+    //Seguing waying to the visitation view Controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "place" {
@@ -187,10 +173,9 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
             
             
                 detailViewControll.poi = pointOfInterest
-                
-    
-            
+
         }
+        
 
         
     }
