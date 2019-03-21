@@ -34,6 +34,8 @@ class VisitationTableViewController: UITableViewController {
        
     }
     
+    
+    
     //Dissmising the place table view controller
     @objc func dismisController() {
         
@@ -59,28 +61,40 @@ class VisitationTableViewController: UITableViewController {
         return cell
     }
     
-    
-    
-    //responding the the selected row
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let point = poi[indexPath.row]
-
-     //Creating alert congtroller for visiting locations
-    let alerController = UIAlertController(title: "Visisting?", message: "Do you want to visit here", preferredStyle: .alert)
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        print("Button tapped")
+        let point = poi[indexPath.row]
         
-        let cancelAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        //Creating alert congtroller for visiting locations
+        let alerController = UIAlertController(title: "\(point.name)", message: "Have you visisted here?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         let okAction = UIAlertAction(title: "Yes", style: .default) { (action) in
             let selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
-            selectedCell.contentView.backgroundColor = UIColor.red
-            print("Yes pressed")
-
+            //selectedCell.contentView.backgroundColor = UIColor.yellow
+            selectedCell.textLabel?.text = "VISITED: \(point.name)"
+            selectedCell.detailTextLabel?.text = "Visited: \(point.coordinate)"
+            
         }
         
         alerController.addAction(cancelAction)
         alerController.addAction(okAction)
         
-        present(alerController, animated: true, completion: nil)
+         present(alerController, animated: true, completion: nil)
+    }
+    
+    
+    //responding the the selected row
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let point = poi[indexPath.row]
+//
+//        let row = indexPath.row
+//        print(poi[row])
+        //self.performSegue(withIdentifier: "showMap", sender: indexPath);
+
+        
+
         
     
    tableView.deselectRow(at: indexPath, animated: true)
@@ -93,10 +107,9 @@ class VisitationTableViewController: UITableViewController {
             let vc  = segue.destination as! MapViewController
         
             vc.pointOfInterest = [poi[indexPath.row]]
+            
        
 
-        
-        
    
         
  
@@ -104,6 +117,18 @@ class VisitationTableViewController: UITableViewController {
         }
     
     }
+    
+     func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        if segue.identifier == "showMap" {
+            let nav = segue.destination as! UINavigationController
+            let detailViewControll = nav.topViewController as! MapViewController
+            
+            let row = (sender as! NSIndexPath).row; //we know that sender is an NSIndexPath here.
+            
+            let point = poi[row]
+            detailViewControll.pointOfInterest = [point]
+        }
+}
 }
     
 

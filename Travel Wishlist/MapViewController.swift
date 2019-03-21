@@ -113,7 +113,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         print("Left BarButton")
         
-        performSegue(withIdentifier: "place", sender: leftButton)
+        performSegue(withIdentifier: "place", sender: self)
 
     }
     
@@ -121,8 +121,10 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
     @objc func rightbarButton(right: UIBarButtonItem) {
        
        self.navigationItem.rightBarButtonItem?.title = "Find a place to add"
-        self.pointOfInterest.append(newPlace)
+        if newPlace != nil {
+        pointOfInterest.append(newPlace)
 
+        }
     }
 
     //Find a place on the map
@@ -146,14 +148,14 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                     
                     let locationString = " \(placeLocation.name!)"
                     annotation.coordinate = cooridinate
-                    annotation.title = locationString
+                    annotation.title = "Want to go here?"
                     print(locationString)
                     
                     let place = Places(name: locationString, coordinate: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude))
                     
                     self.newPlace = place
                     
-
+                    
                 }
 
             }
