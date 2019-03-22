@@ -60,17 +60,49 @@
 		189407162225E86F00E71018 /* Travel Wishlist */ = {
 			isa = PBXGroup;
 			children = (
-				189407172225E86F00E71018 /* AppDelegate.swift */,
-				189407292225F45A00E71018 /* PlaceList.swift */,
-				1894072B2225F4A800E71018 /* Places.swift */,
-				189407192225E86F00E71018 /* MapViewController.swift */,
-				18B72356222D5121005DAB25 /* VisitationTableViewController.swift */,
-				1894071B2225E86F00E71018 /* Main.storyboard */,
-				1894071E2225E87000E71018 /* Assets.xcassets */,
-				189407202225E87000E71018 /* LaunchScreen.storyboard */,
+				18EE24BC22453F5B000B5413 /* Model */,
+				18EE24BD22453F65000B5413 /* View */,
+				18EE24BB22453F4F000B5413 /* Controllers */,
+				18EE24BE22453F70000B5413 /* Supporting Files */,
 				189407232225E87000E71018 /* Info.plist */,
 			);
 			path = "Travel Wishlist";
+			sourceTree = "<group>";
+		};
+		18EE24BB22453F4F000B5413 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				189407192225E86F00E71018 /* MapViewController.swift */,
+				18B72356222D5121005DAB25 /* VisitationTableViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		18EE24BC22453F5B000B5413 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				189407292225F45A00E71018 /* PlaceList.swift */,
+				1894072B2225F4A800E71018 /* Places.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		18EE24BD22453F65000B5413 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1894071B2225E86F00E71018 /* Main.storyboard */,
+				189407202225E87000E71018 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		18EE24BE22453F70000B5413 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				189407172225E86F00E71018 /* AppDelegate.swift */,
+				1894071E2225E87000E71018 /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
