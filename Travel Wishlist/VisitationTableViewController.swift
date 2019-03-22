@@ -21,27 +21,15 @@ class VisitationTableViewController: UITableViewController {
         
          super.viewWillAppear(true)
         
-        let dissButton = UIBarButtonItem(title: "Done", style: .done
-            , target: self, action: #selector(dismisController))
-        self.navigationItem.rightBarButtonItem = dissButton
-        dissButton.tintColor = .white
-        
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Places"
         navigationController?.navigationBar.barTintColor = .blue
         print("view didload")
-        print(poi)
+        print(MapViewController.self )
        
     }
     
-    
-    
-    //Dissmising the place table view controller
-    @objc func dismisController() {
-        
-        presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-    
+
     //Matching the number of rows to the model array
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -61,6 +49,8 @@ class VisitationTableViewController: UITableViewController {
         return cell
     }
     
+
+    
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         print("Button tapped")
         let point = poi[indexPath.row]
@@ -74,7 +64,7 @@ class VisitationTableViewController: UITableViewController {
             let selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
             //selectedCell.contentView.backgroundColor = UIColor.yellow
             selectedCell.textLabel?.text = "VISITED: \(point.name)"
-            selectedCell.detailTextLabel?.text = "Visited: \(point.coordinate)"
+            
             
         }
         
@@ -88,47 +78,32 @@ class VisitationTableViewController: UITableViewController {
     //responding the the selected row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let point = poi[indexPath.row]
-//
-//        let row = indexPath.row
-//        print(poi[row])
-        //self.performSegue(withIdentifier: "showMap", sender: indexPath);
 
+      // self.performSegue(withIdentifier: "showMap", sender: self);
+        //presentingViewController?.dismiss(animated: true, completion: {
+            func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+                if segue.identifier == "showMap" {
+                    let nav = segue.destination as! UINavigationController
+                    let detailViewControll = nav.topViewController as! MapViewController
+                    
+                    // let row = (sender as! NSIndexPath).row; //we know that sender is an NSIndexPath here.
+                    let point = self.poi[indexPath.row]
+                    
+                    // let point = poi[row]
+                    detailViewControll.pointOfInterest = [point]
+                }
+            }
+            
+      
         
 
-        
-    
    tableView.deselectRow(at: indexPath, animated: true)
-      //  dismiss(animated: true, completion: nil)
 
         
     
-     func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Item" {
-            let vc  = segue.destination as! MapViewController
-        
-            vc.pointOfInterest = [poi[indexPath.row]]
-            
-       
-
-   
-        
- 
-    }
-        }
-    
     }
     
-     func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        if segue.identifier == "showMap" {
-            let nav = segue.destination as! UINavigationController
-            let detailViewControll = nav.topViewController as! MapViewController
-            
-            let row = (sender as! NSIndexPath).row; //we know that sender is an NSIndexPath here.
-            
-            let point = poi[row]
-            detailViewControll.pointOfInterest = [point]
-        }
-}
+    
 }
     
 

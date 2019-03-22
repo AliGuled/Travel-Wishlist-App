@@ -11,6 +11,8 @@ import MapKit
 import CoreLocation
 
 class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDelegate {
+   
+    
 
     var newPlace: Places! // Subclass of places
     
@@ -33,8 +35,8 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
     var longitude = -87.941101
     
     //Inital span
-    var latitudeDelta = 0.3
-    var longitudeDelta = 0.3
+    var latitudeDelta = 0.1
+    var longitudeDelta = 0.1
 
     //the object that determines the location
     let placeManger = CLLocationManager()
@@ -64,6 +66,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         mapView.addGestureRecognizer(tapGestrueRecongnizer)
         centerMapInInitialCoordinates()
+        print(MapViewController.self)
 
     }
 
@@ -73,6 +76,9 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
         mapView.setRegion(region, animated: true)
         
+    }
+    @IBAction func goback(segue: UIStoryboardSegue) {
+        performSegue(withIdentifier: "place", sender: segue)
     }
     
     // When the map is tapped it calls the loadpoint of interst function
@@ -117,13 +123,19 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
 
     }
     
+    
+    
     //Adding locations to the place list
     @objc func rightbarButton(right: UIBarButtonItem) {
        
        self.navigationItem.rightBarButtonItem?.title = "Find a place to add"
         if newPlace != nil {
         pointOfInterest.append(newPlace)
+            
 
+        } else {
+            
+            newPlace = nil
         }
     }
 
@@ -141,28 +153,40 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         let region:MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude), span: span)
         mapView.setRegion(region, animated: true)
         
+        
         geoCoder.reverseGeocodeLocation(CLLocation(latitude: cooridinate.latitude, longitude: cooridinate.longitude)) {(placeMarks : [CLPlacemark]?, error: Error?) in
             if let placeLocation = placeMarks?[0] {
                 
-                if error == nil && (placeMarks?.count)! > 0 {
+                
+                if error == nil && (placeMarks?.count)! >= 0 {
                     
                     let locationString = " \(placeLocation.name!)"
                     annotation.coordinate = cooridinate
                     annotation.title = "Want to go here?"
                     print(locationString)
                     
-                    let place = Places(name: locationString, coordinate: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude))
+                    DispatchQueue.main.async {
+                        let place = Places(name: locationString, coordinate: CLLocationCoordinate2D(latitude: cooridinate.latitude, longitude: cooridinate.longitude))
+                        
+                        self.newPlace = place
+                    }
                     
-                    self.newPlace = place
+                  
+                   
                     
                     
                 }
-
+                
             }
             
         }
         
         self.navigationItem.rightBarButtonItem?.title = "Add place"
+         recongnizer.isEnabled = false
+       
+        
+        
+
         
     }
 
