@@ -35,8 +35,8 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
     var longitude = -87.941101
     
     //Inital span
-    var latitudeDelta = 0.1
-    var longitudeDelta = 0.1
+    var latitudeDelta = 0.04
+    var longitudeDelta = 0.04
 
     //the object that determines the location
     let placeManger = CLLocationManager()
@@ -47,7 +47,9 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         mapView = MKMapView()
         view = mapView
         placeManger.startUpdatingLocation()
+
     }
+
     
     //Outlet are set when view is about to appear
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +68,6 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         mapView.addGestureRecognizer(tapGestrueRecongnizer)
         centerMapInInitialCoordinates()
-        print(MapViewController.self)
 
     }
 
@@ -98,18 +99,20 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                             action: #selector(rightbarButton))
         rightBarButton.tintColor = .white
         
+        
         return rightBarButton
         
     }
     
     //Left bar button for accesing the place list
-    var leftBar: UIBarButtonItem  {
+    var leftBar: UIBarButtonItem   {
         
         let leftBarButton =
             UIBarButtonItem(title:
-                "Places", style: .plain,
+                "View Places", style: .plain,
                            target: self, action: #selector(leftButton))
         leftBarButton.tintColor = .white
+        leftBarButton.isEnabled = true
         
         return leftBarButton
         
@@ -122,7 +125,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         performSegue(withIdentifier: "place", sender: self)
 
     }
-    
+  
     
     
     //Adding locations to the place list
@@ -132,8 +135,16 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         if newPlace != nil {
         pointOfInterest.append(newPlace)
             
+            
+            self.navigationItem.rightBarButtonItem?.title = "Place added"
+            right.isEnabled = false
+            
+        
+            
 
         } else {
+            
+
             
             newPlace = nil
         }
@@ -171,8 +182,10 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                         self.newPlace = place
                     }
                     
-                  
+                  recongnizer.numberOfTapsRequired = 1
+                    self.rightBar.isEnabled = true
                    
+                
                     
                     
                 }
@@ -181,13 +194,11 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
             
         }
         
-        self.navigationItem.rightBarButtonItem?.title = "Add place"
+        self.navigationItem.rightBarButtonItem?.title = "Add a place"
          recongnizer.isEnabled = false
-       
         
         
 
-        
     }
 
     //Seguing waying to the visitation view Controller
@@ -204,6 +215,10 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
 
         
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        newPlace = nil
     }
 
 }

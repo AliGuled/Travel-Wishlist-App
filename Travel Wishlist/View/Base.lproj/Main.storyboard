@@ -23,9 +23,11 @@
                     <navigationItem key="navigationItem" id="Lve-wM-xSg"/>
                     <connections>
                         <segue destination="Jqv-Kz-rmR" kind="showDetail" identifier="place" id="2yU-aU-WEt"/>
+                        <segue destination="RJJ-zF-HSU" kind="unwind" identifier="place" unwindAction="gobackWithSegue:" id="Tl6-ey-zXJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <exit id="RJJ-zF-HSU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1420" y="-672.41379310344837"/>
         </scene>

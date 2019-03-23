@@ -24,9 +24,24 @@ class VisitationTableViewController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Places"
         navigationController?.navigationBar.barTintColor = .blue
+        navigationItem.rightBarButtonItem = done
+        navigationItem.rightBarButtonItem?.tintColor = .white
         print("view didload")
         print(MapViewController.self )
        
+    }
+    @IBAction func goback(segue: UIStoryboardSegue) {
+        performSegue(withIdentifier: "place", sender: segue)
+    }
+    
+    var done: UIBarButtonItem   {
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(done(doneButton:)))
+        
+        return doneButton
+    }
+    
+    @objc func done(doneButton: UIBarButtonItem) {
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
 
@@ -77,10 +92,7 @@ class VisitationTableViewController: UITableViewController {
     
     //responding the the selected row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let point = poi[indexPath.row]
 
-      // self.performSegue(withIdentifier: "showMap", sender: self);
-        //presentingViewController?.dismiss(animated: true, completion: {
             func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
                 if segue.identifier == "showMap" {
                     let nav = segue.destination as! UINavigationController
@@ -93,17 +105,25 @@ class VisitationTableViewController: UITableViewController {
                     detailViewControll.pointOfInterest = [point]
                 }
             }
-            
-      
-        
 
    tableView.deselectRow(at: indexPath, animated: true)
-
-        
-    
     }
     
+    //Deleting rows from the table
     
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Remove Place"
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            poi.remove(at: indexPath.row)
+            self.tableView.reloadData()
+        }
+        
+    }
+
 }
     
 
