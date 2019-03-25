@@ -11,6 +11,7 @@ import CoreLocation
 
 class PlaceList : NSObject  {
     
+    var allplaces = [Places]()
     let locations: Places //subclass of locations
     var coordinate: CLLocationCoordinate2D { return locations.coordinate } //tapped coordinate
     
@@ -27,6 +28,15 @@ class PlaceList : NSObject  {
     var subtitle: String? {
         return "(\(locations.coordinate.latitude), \(locations.coordinate.longitude))"
     }
+    
+    //Removing item from the array
+    func removeItem(_ place: Places)  {
+        if let index = allplaces.index(of: place) {
+            allplaces.remove(at: index)
+        }
+    }
+    
+
 
 }
     

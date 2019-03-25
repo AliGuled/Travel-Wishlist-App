@@ -69,6 +69,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         mapView.addGestureRecognizer(tapGestrueRecongnizer)
         centerMapInInitialCoordinates()
 
+
     }
 
     //Centering the initail coordinates
@@ -122,7 +123,8 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         
         print("Left BarButton")
         
-        performSegue(withIdentifier: "place", sender: self)
+        performSegue(withIdentifier: "place", sender: presentingViewController)
+        
 
     }
   
@@ -135,20 +137,15 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
         if newPlace != nil {
         pointOfInterest.append(newPlace)
             
-            
             self.navigationItem.rightBarButtonItem?.title = "Place added"
             right.isEnabled = false
-            
-        
-            
 
         } else {
-            
-
             
             newPlace = nil
         }
     }
+    
 
     //Find a place on the map
     @objc func loadPointOfInterests(recongnizer:UITapGestureRecognizer) {
@@ -189,6 +186,7 @@ class MapViewController: UIViewController, MKMapViewDelegate,CLLocationManagerDe
                     
                     
                 }
+                //recongnizer.isEnabled = false
                 
             }
             

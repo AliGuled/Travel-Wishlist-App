@@ -13,6 +13,8 @@ class VisitationTableViewController: UITableViewController {
     
    //Sub class of the model
    var poi: [Places] = []
+    var placeList: PlaceList!
+    
     
     //Shared instance of the map view controller
     var map: MapViewController!
@@ -50,6 +52,7 @@ class VisitationTableViewController: UITableViewController {
         
         return poi.count
     }
+
     
     // loading the cells with model data
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,6 +60,10 @@ class VisitationTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell", for: indexPath)
         
         let point = poi[indexPath.row]
+        
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        cell.detailTextLabel?.numberOfLines = 0
         
         cell.textLabel?.text = point.name
         cell.detailTextLabel?.text = " Cooridinate: (\(point.coordinate.latitude), \(point.coordinate.longitude))"
@@ -77,8 +84,10 @@ class VisitationTableViewController: UITableViewController {
         
         let okAction = UIAlertAction(title: "Yes", style: .default) { (action) in
             let selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
-            //selectedCell.contentView.backgroundColor = UIColor.yellow
+            selectedCell.textLabel?.font = UIFont.italicSystemFont(ofSize: 15)
+            
             selectedCell.textLabel?.text = "VISITED: \(point.name)"
+            selectedCell.detailTextLabel?.font = UIFont.italicSystemFont(ofSize: 15)
             
             
         }
@@ -96,13 +105,18 @@ class VisitationTableViewController: UITableViewController {
             func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
                 if segue.identifier == "showMap" {
                     let nav = segue.destination as! UINavigationController
-                    let detailViewControll = nav.topViewController as! MapViewController
                     
-                    // let row = (sender as! NSIndexPath).row; //we know that sender is an NSIndexPath here.
-                    let point = self.poi[indexPath.row]
+                    if let row = tableView.indexPathForSelectedRow?.row {
+                        
+                        let point = self.poi[row]
+                        let detailViewControll = nav.topViewController as! MapViewController
+                        detailViewControll.newPlace = point
+
+                    }
+                    
+                    
                     
                     // let point = poi[row]
-                    detailViewControll.pointOfInterest = [point]
                 }
             }
 
@@ -118,8 +132,14 @@ class VisitationTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            poi.remove(at: indexPath.row)
-            self.tableView.reloadData()
+            if let row = tableView.indexPathForSelectedRow?.row {
+            let point = poi[row]
+            placeList.removeItem(point)
+       
+            
+            //self.tableView.deleteRows(at: [indexPath], with: .automatic)
+           // self.tableView.reloadData()
+        }
         }
         
     }
